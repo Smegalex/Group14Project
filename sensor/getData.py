@@ -7,10 +7,12 @@ def getData(deviceID):
     temp = calc_temperature()
     humidity = calc_humidity()
     iaqScore, iaqPercent, eCO2Value = calc_air_quality()
-    show("Temperature: {} C".format(temp), 0)
-    show("Humidity: {} %".format(humidity), 1)
-    show("IAQ Score: {}".format(iaqScore), 2)
-    show("IAQ Percent: {} %".format(iaqPercent) , 3)
-    show("eCO2 Value: {}".format(eCO2Value) + " ppm", 4)
-    return {"deviceID":deviceID,"temperature":temp,"humidity":humidity,"eCO2Value":eCO2Value,"iaqScore":iaqScore}
+    show("Device ID: {}".format(deviceID) , 0)
+    show("Temperature: {} C".format(temp), 1)
+    show("Humidity: {} %".format(humidity), 2)
+    show("IAQ Score: {}".format(iaqScore), 3)
+    show("IAQ Percent: {} %".format(iaqPercent) , 4)
+    show("CO2 Level: {}".format(eCO2Value),5)
+    show("Reading Successful.".format(iaqPercent) , 6)
+    return {"deviceID":deviceID,"temperature":temp,"humidity":humidity,"eCO2Value":eCO2Value,"iaqScore":iaqScore,"iaqPercent":iaqPercent}
     
