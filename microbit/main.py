@@ -3,9 +3,8 @@ from OLED import *
 from getData import *
 import radio
 init_display()
+
 DEVICEID = 1 #change for each device
-
-
 data = getData(DEVICEID) #gets data as a dictionary
 
 
@@ -25,7 +24,8 @@ while True:
     if incoming:
         display.scroll(incoming)
 
+    sleep(1000)
     pcMessage = uart.read()
     if pcMessage:
-        pcMessage = "microbit: {}\n".format(str(pcMessage.decode()))
+        pcMessage = str(pcMessage.decode())
         uart.write(pcMessage)
