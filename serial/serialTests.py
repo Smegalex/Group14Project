@@ -19,7 +19,6 @@ def create_message(value):
                'receiver_id': target_id}
     return message
 
-
 def validate_message(message_dict):
     expected_keys = ['msg', 'sender_id', 'receiver_id']
     for key in expected_keys:
@@ -27,17 +26,27 @@ def validate_message(message_dict):
             return False
     return True
 
+def change_target(new_target):
+    global target_id
+    target_id = new_target
 
 # List to store unseen messages
 inbox = []
 
 
 def send_message():
+    global receiver_id 
     user_input = input(
         "Enter your message (type 'INBOX' to check messages): ")
 
     # If the user types 'INBOX', show all unseen messages
-    if user_input.upper() == "INBOX":
+    if user_input.startswith("/"):
+        if user_input.startswith("/target"):
+            username = user_input.split("/target")
+            username = username[1].strip()
+            change_target(username)
+            print(f"Messaging {receiver_id}")
+    elif user_input.upper() == "INBOX":
         receive_messages()
         show_inbox()
     else:
