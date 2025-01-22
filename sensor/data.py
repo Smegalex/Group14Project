@@ -10,8 +10,6 @@ def send_data(sender_id, receiver_id, data):
 
 
 def validate_data(sensor_id, server_id, incoming):
-    print("Validating data...")
-
     message = eval(incoming)
 
     if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
