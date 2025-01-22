@@ -16,7 +16,7 @@ server_id = "server14S"
 
 while True:
     show("Device ID: {}".format(sensor_id), 0)
-    show("Ready To Recieve Data", 4)
+    show("Ready to recieve request", 4)
 
     incoming = radio.receive()
 
@@ -34,17 +34,17 @@ while True:
             except:
                 print("Error reading count!")
 
-            show("Sending data {} times...".format(count), 4)
+            show("Sending data...", 4)
 
             for i in range(count):
                 print("Reading metrics...")
                 data = read_metrics(sensor_id)
 
-                show("Sending data count: {}...".format(count), 4)
+                print("Sending data count: {}...".format(i + 1))
                 send_data(sensor_id, server_id, data)
 
                 sleep(1000)
 
-            show("Data Sent!", 4)
+            show("Data sent", 4)
         else:
             print("Request not for us!")
