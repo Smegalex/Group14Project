@@ -1,5 +1,4 @@
 import radio
-from metrics import read_metrics
 
 
 def send_data(sender_id, receiver_id, data):
