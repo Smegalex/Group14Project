@@ -16,7 +16,7 @@ server_id = "server14S"
 
 while True:
     show("Device ID: {}".format(sensor_id), 0)
-    show("Ready to recieve request", 4)
+    show("Ready!", 4)
 
     incoming = radio.receive()
 
