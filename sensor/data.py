@@ -16,7 +16,7 @@ def validate_data(sensor_id, server_id, incoming):
 
     if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
         print("Request validated!")
-        return True
+        return message
     else:
         print("Request invalid!")
         return False

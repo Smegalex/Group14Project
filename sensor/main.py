@@ -22,13 +22,17 @@ while True:
         print("Data received!")
         print("Decoding data...")
 
-        valid = validate_data(sensor_id, server_id, incoming)
+        validated = validate_data(sensor_id, server_id, incoming)
 
-        if valid:
+        if validated:
+            count = int(validated["data"])
+
             print("Reading metrics...")
             data = read_metrics(sensor_id)
 
-            print("Sending data...")
-            send_data(sensor_id, server_id, data)
+            print("Sending data {} times...".format(count))
+            for i in range(count):
+                send_data(sensor_id, server_id, data)
+                sleep(1000)
         else:
             print("Not sending data!")
