@@ -2,7 +2,7 @@ from microbit import *
 import radio
 # Connect server to PC
 
-personal_id = "Controller"
+personal_id = "server14C"# ID for controller
 
 radio.on()# Turn on the radio
 radio.config(channel=14, group=1)# Set the channel
