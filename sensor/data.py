@@ -23,7 +23,7 @@ def recieve_data(sensor_id, server_id):
 
         print("Validating data...")
 
-        if message["sender_id"] == sensor_id and message["receiver_id"] == server_id:
+        if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
             print("Request validated, sending data back!")
 
             data = read_metrics(sensor_id)
