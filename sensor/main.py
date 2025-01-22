@@ -1,7 +1,6 @@
 from microbit import *
 import radio
-from metrics import read_metrics
-from data import send_data
+from data import *
 
 radio.config(channel=14, group=1, length=250)
 radio.on()
@@ -10,10 +9,8 @@ sensor_id = "server141"
 server_id = "server14C"
 
 while True:
-    if button_a.is_pressed():
-        data = read_metrics(sensor_id)
-        send_data(sensor_id, server_id, data)
-
+    recieve_data(sensor_id,server_id)
+    
     incoming = radio.receive()
     if incoming:
         print("Data received!")
