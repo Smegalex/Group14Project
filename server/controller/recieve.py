@@ -7,6 +7,15 @@ personal_id = "Controller"
 radio.on()# Turn on the radio
 radio.config(channel=14, group=1)# Set the channel
 
+### Notes ###
+# If message starts with certain ID, then display.scroll to test
+
+# All kitroniks with have my personal ID to send to, prob use time.sleep to avoid sending at the same time
+# Randomised sleep can be used to help stop collisions
+
+# Dictionary to store the latest data from each sensor
+sensor_data = {}
+
 while True:
     message = radio.receive()# Check for incoming messages
     if message:
