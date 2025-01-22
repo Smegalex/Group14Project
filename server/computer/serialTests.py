@@ -1,6 +1,6 @@
 import serial
 import time
-from csvFormatting import *
+from csvFormatting import process_messages
 
 portName = "COM9"  # add more variables for other portnames
 
@@ -81,8 +81,8 @@ def receive_messages():
             print(msg_dict)
             if validate_message(msg_dict):
                 if msg_dict['receiver_id'] == personal_id:
-                    process_messages(msg_dict)
                     if (isinstance(msg_dict["data"], dict)):
+                        process_messages(msg_dict)
                         print(f"{GREEN}{msg_dict["sender_id"]}:{
                               GRAY} data dictionary received")
                     else:

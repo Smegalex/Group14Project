@@ -9,5 +9,5 @@ def process_messages(message):
         writer.writerow(dictionary)
 
 
-#testdata = {"sender_id":"sensor140","receiver_id":"14S","data":{"temperature":50,"humidity":25}}
-#process_messages(testdata)
+# testdata = {'sender_id': 'sensor141', 'data': {'temperature': 26.12, 'eCO2Value': 483, 'iaqScore': 55, 'iaqPercent': 89, 'humidity': 23}, 'receiver_id': 'server14S'}
+# process_messages(testdata)
