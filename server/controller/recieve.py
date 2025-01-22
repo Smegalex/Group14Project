@@ -22,15 +22,19 @@ while True:
         # Parse the message for the sender ID
         if message.startswith("Kitronik1:"):
             display.scroll("From K1: " + message[9:])  # Handle Kitronik 1
+            sensor_data.append
 
         elif message.startswith("Kitronik2:"):
             display.scroll("From K2: " + message[9:])  # Handle Kitronik 2
+            sensor_data.append
 
         elif message.startswith("Kitronik3:"):
             display.scroll("From K3: " + message[9:])  # Handle Kitronik 3
+            sensor_data.append
 
         elif message.startswith("Kitronik4:"):
             display.scroll("From K4: " + message[9:])  # Handle Kitronik 4
+            sensor_data.append
 
         else:
             display.scroll("Unknown: " + message)  # Handle unknown messages
