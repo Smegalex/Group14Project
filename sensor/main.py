@@ -9,7 +9,7 @@ from metrics import *
 radio.config(channel=14, group=1, length=250)
 radio.on()
 
-sensor_id = "server140"
+sensor_id = "sensor140"
 server_id = "server14S"
 
 while True:
