@@ -12,17 +12,21 @@ GRAY = "\033[0m"
 
 # Initialize the serial connection to the MicroBit
 connection = serial.Serial(port=portName, baudrate=115200, timeout=1)
+connection.set_buffer_size(rx_size=12800, tx_size=12800)
 
 
-def create_message(value):
+def create_message(value, receiver_id: str = None):
     message = {'data': value, 'sender_id': personal_id,
                'receiver_id': target_id}
+    if receiver_id:
+        message["receiver_id"] = receiver_id
+    # print(message)
     return message
 
 
 def validate_message(message_dict):
     expected_keys = ['data', 'sender_id', 'receiver_id']
-    print("message valid")
+    # print("message valid")
     for key in expected_keys:
         if key not in message_dict:
             return False
@@ -41,7 +45,7 @@ listen = 0
 def send_message():
     global receiver_id
     user_input = input(
-        "Enter your message: ")
+        f"Enter number of updates you want from {target_id}: ")
 
     if user_input.startswith("/"):
         global listen
@@ -60,6 +64,9 @@ def send_message():
                 listen = 10
 
             print(f"Listening for {listen} seconds")
+            message = str(create_message(
+                f"listen{listen}", "server14C")) + "\n"
+            connection.write(message.encode())
     else:
         message = str(create_message(user_input)) + "\n"
         connection.write(message.encode())
@@ -71,15 +78,19 @@ def receive_messages():
         # Check if Message is valid dictionary format
         try:
             msg_dict = eval(message)
+            print(msg_dict)
             if validate_message(msg_dict):
                 if msg_dict['receiver_id'] == personal_id:
                     inbox.append(msg_dict)
                     if (isinstance(msg_dict["data"], dict)):
-                        print(f"{GREEN}{msg_dict["sender_id"]}:{GRAY} data dictionary received")
+                        print(f"{GREEN}{msg_dict["sender_id"]}:{
+                              GRAY} data dictionary received")
                     else:
-                        print(f"{GREEN}{msg_dict["sender_id"]}:{GRAY} {msg_dict['data']}")
+                        print(f"{GREEN}{msg_dict["sender_id"]}:{
+                              GRAY} {msg_dict['data']}")
         except:
             print("Invalid message received.")
+            print(message)
 
 
 def main():
@@ -91,9 +102,11 @@ def main():
         # Allow the user to send a message or check their inbox
         if listen <= 0:
             send_message()
-        time.sleep(0.2)
+            time.sleep(0.3)
+
         if listen > 0:
-            listen += -0.2
+            time.sleep(0.05)
+            listen += -0.05
 
 
 # Run the main function
