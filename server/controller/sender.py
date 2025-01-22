@@ -13,6 +13,6 @@ def sendCommand(controllerId: str, serverId: str):
             return 0
         pcMessage = str(pcMessage) + "\n"
         radio.send(pcMessage)
-        commandConfirmation = {"msg": "Command sent succesfully.",
+        commandConfirmation = {"data": "Command sent succesfully.",
                                "sender_id": controllerId, "receiver_id": serverId}
-        uart.write(str(commandConfirmation)+"\n")
+        uart.write((str(commandConfirmation)+"\n").encode())
