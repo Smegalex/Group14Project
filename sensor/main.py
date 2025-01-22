@@ -27,12 +27,14 @@ while True:
         if validated:
             count = int(validated["data"])
 
-            print("Reading metrics...")
-            data = read_metrics(sensor_id)
-
             print("Sending data {} times...".format(count))
             for i in range(count):
+                print("Reading metrics...")
+                data = read_metrics(sensor_id)
+
+                print("Sending data count: {}...".format(count))
                 send_data(sensor_id, server_id, data)
+
                 sleep(1000)
         else:
             print("Not sending data!")
