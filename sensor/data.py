@@ -3,8 +3,6 @@ from metrics import read_metrics
 
 
 def send_data(sender_id, receiver_id, data):
-    print("Sending data...")
-
     message = {"sender_id": sender_id, "receiver_id": receiver_id, "data": data}
     radio.send(str(message) + "\n")
 
@@ -12,21 +10,14 @@ def send_data(sender_id, receiver_id, data):
     print(str(message))
 
 
-def recieve_data(sensor_id, server_id):
-    incoming = radio.receive()
+def validate_data(sensor_id, server_id, incoming):
+    print("Validatig data...")
 
-    if incoming:
-        print("Data received!")
-        print("Decoding data...")
+    message = eval(incoming)
 
-        message = eval(incoming)
-
-        print("Validating data...")
-
-        if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
-            print("Request validated, sending data back!")
-
-            data = read_metrics(sensor_id)
-            send_data(sensor_id, server_id, data)
-        else:
-            print("Data received from unknown source.")
+    if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
+        print("Request validated!")
+        return True
+    else:
+        print("Request invalid!")
+        return False
