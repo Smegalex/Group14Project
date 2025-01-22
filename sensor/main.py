@@ -1,23 +1,17 @@
 from microbit import *
-from OLED import *
-from getData import *
 import radio
-init_display()
+from data import *
 
-DEVICEID = 1 #change for each device
-data = getData(DEVICEID) #gets data as a dictionary
-
-
-radio.config(channel=14, group=1)
+radio.config(channel=14, group=1, length=250)
 radio.on()
-uart.init(baudrate=115200)
+
+sensor_id = "server141"
+server_id = "server14C"
 
 while True:
-    if button_a.was_pressed():
-        display.show(8)
-        radio.send("Alex")
-
+    recieve_data(sensor_id,server_id)
+    
     incoming = radio.receive()
     if incoming:
-        display.scroll(incoming)
-
+        print("Data received!")
+        print(incoming)
