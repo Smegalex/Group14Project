@@ -14,13 +14,13 @@ def read_metrics(sensor_id):
     humidity = calc_humidity()
     iaqScore, iaqPercent, eCO2Value = calc_air_quality()
 
-    show("Device ID: {}".format(sensor_id) , 0)
+    show("Device ID: {}".format(sensor_id), 0)
     show("Temperature: {} C".format(temp), 1)
     show("Humidity: {} %".format(humidity), 2)
     show("IAQ Score: {}".format(iaqScore), 3)
-    show("IAQ Percent: {} %".format(iaqPercent) , 4)
-    show("CO2 Level: {}".format(eCO2Value),5)
-    show("Reading Successful.".format(iaqPercent) , 6)
+    show("IAQ Percent: {} %".format(iaqPercent), 4)
+    show("CO2 Level: {}".format(eCO2Value), 5)
+    show("Reading Successful.".format(iaqPercent), 6)
 
     return {
         "temperature": temp,

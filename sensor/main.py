@@ -1,6 +1,11 @@
 from microbit import *
+import radio
+
 from metrics import read_metrics
 from data import send_data
+
+radio.config(channel=14, group=1)
+radio.on()
 
 sensor_id = "server140"
 server_id = "server14C"
@@ -13,4 +18,3 @@ while True:
     incoming = radio.receive()
     if incoming:
         display.scroll(incoming)
-
