@@ -3,7 +3,7 @@ import time
 
 portName = "COM9"  # add more variables for other portnames
 
-personal_id = "fy23ot"
+personal_id = "server14S"
 target_id = "fy23ot"
 
 # Color codes for terminal text
@@ -58,10 +58,13 @@ def receive_messages():
     while connection.in_waiting > 0:
         message = connection.readline().decode().strip()
         # Check if Message is valid dictionary format
-        msg_dict = eval(message)
-        if validate_message(msg_dict):
-            if msg_dict['receiver_id'] == personal_id:
-                inbox.append(msg_dict)
+        try:
+            msg_dict = eval(message)
+            if validate_message(msg_dict):
+                if msg_dict['receiver_id'] == personal_id:
+                    inbox.append(msg_dict)
+        except:
+            print("Invalid message received.")
 
 
 def show_inbox():
