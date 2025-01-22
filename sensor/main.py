@@ -17,15 +17,7 @@ while True:
         display.show(8)
         radio.send("Alex")
 
-    if button_b.was_pressed():
-        uart.write("Hello World!\n")
-
     incoming = radio.receive()
     if incoming:
         display.scroll(incoming)
 
-    sleep(1000)
-    pcMessage = uart.read()
-    if pcMessage:
-        pcMessage = str(pcMessage.decode())
-        uart.write(pcMessage)
