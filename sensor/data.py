@@ -10,7 +10,7 @@ def send_data(sender_id, receiver_id, data):
 
 
 def validate_data(sensor_id, server_id, incoming):
-    print("Validatig data...")
+    print("Validating data...")
 
     message = eval(incoming)
 
