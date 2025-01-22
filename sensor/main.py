@@ -9,12 +9,14 @@ from metrics import *
 radio.config(channel=14, group=1, length=250)
 radio.on()
 
+init_display()
+
 sensor_id = "sensor140"
 server_id = "server14S"
 
 while True:
     show("Device ID: {}".format(sensor_id), 0)
-    show("Ready To Recieve Data", 4)
+    show("Ready!", 4)
 
     incoming = radio.receive()
 
@@ -25,19 +27,24 @@ while True:
         validated = validate_data(sensor_id, server_id, incoming)
 
         if validated:
-            count = int(validated["data"])
+            count = 1
 
-            show("Sending data {} times...".format(count), 4)
+            try:
+                count = int(validated["data"])
+            except:
+                print("Error reading count!")
+
+            show("Sending data...", 4)
 
             for i in range(count):
                 print("Reading metrics...")
                 data = read_metrics(sensor_id)
 
-                show("Sending data count: {}...".format(count), 4)
+                print("Sending data count: {}...".format(i + 1))
                 send_data(sensor_id, server_id, data)
 
                 sleep(1000)
 
-            show("Data Sent!", 4)
+            show("Data sent", 4)
         else:
             print("Request not for us!")

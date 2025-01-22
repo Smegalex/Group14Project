@@ -1,5 +1,6 @@
 import serial
 import time
+from csvFormatting import *
 
 portName = "COM9"  # add more variables for other portnames
 
@@ -38,7 +39,6 @@ def change_target(new_target):
     target_id = new_target
 
 
-inbox = []
 listen = 0
 
 
@@ -81,7 +81,7 @@ def receive_messages():
             print(msg_dict)
             if validate_message(msg_dict):
                 if msg_dict['receiver_id'] == personal_id:
-                    inbox.append(msg_dict)
+                    process_messages(msg_dict)
                     if (isinstance(msg_dict["data"], dict)):
                         print(f"{GREEN}{msg_dict["sender_id"]}:{
                               GRAY} data dictionary received")
@@ -98,7 +98,6 @@ def main():
     while True:
         # Check for incoming messages and buffer them
         receive_messages()
-
         # Allow the user to send a message or check their inbox
         if listen <= 0:
             send_message()
