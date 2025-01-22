@@ -7,7 +7,7 @@ server_id = "server14C"
 
 while True:
     if button_a.was_pressed():
-        data = read_metrics()
+        data = read_metrics(sensor_id)
         send_data(sensor_id, server_id, data)
 
     incoming = radio.receive()
