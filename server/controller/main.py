@@ -1,12 +1,15 @@
 from microbit import *
 import radio
-from send import sendCommand
+from sender import sendCommand
+from receiver import receiveCommand
 
-radio.config(channel=14, group=1)
+display.clear()
+radio.config(channel=14, group=1, length=250)
 radio.on()
 controllerId = "server14C"
 serverId = "server14S"
 
 while True:
-    sleep(1000)
+    receiveCommand(serverId)
+    sleep(200)
     sendCommand(controllerId, serverId)
