@@ -1,11 +1,11 @@
 from microbit import *
 import radio
-
 from OLED import *
-
 from data import *
 from metrics import *
 
+
+usedUUID = []
 radio.config(channel=14, group=1, length=250)
 radio.on()
 
@@ -24,7 +24,7 @@ while True:
         print("Request received!")
         print("Validating request...")
 
-        validated = validate_data(sensor_id, server_id, incoming)
+        validated = validate_data(sensor_id, server_id, incoming,usedUUID)
 
         if validated:
             count = 1

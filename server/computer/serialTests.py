@@ -1,6 +1,7 @@
 import serial
 import time
 from csvFormatting import process_messages
+import uuid
 
 portName = "COM9"  # add more variables for other portnames
 
@@ -18,7 +19,7 @@ connection.set_buffer_size(rx_size=12800, tx_size=12800)
 
 def create_message(value, receiver_id: str = None):
     message = {'data': value, 'sender_id': personal_id,
-               'receiver_id': target_id}
+               'receiver_id': target_id,"uuid":uuid.uuid4(),"bounces":0}
     if receiver_id:
         message["receiver_id"] = receiver_id
     # print(message)
@@ -26,7 +27,7 @@ def create_message(value, receiver_id: str = None):
 
 
 def validate_message(message_dict):
-    expected_keys = ['data', 'sender_id', 'receiver_id']
+    expected_keys = ['data', 'sender_id', 'receiver_id',"uuid","bounces"]
     # print("message valid")
     for key in expected_keys:
         if key not in message_dict:

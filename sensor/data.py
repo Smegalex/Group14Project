@@ -9,12 +9,17 @@ def send_data(sender_id, receiver_id, data):
     print(str(message))
 
 
-def validate_data(sensor_id, server_id, incoming):
-    message = eval(incoming)
+def validate_data(sensor_id, server_id, incoming,usedUUID):
+    try:
+        message = eval(incoming)
+    except:
+        return False
 
     if message["sender_id"] == server_id and message["receiver_id"] == sensor_id:
         print("Request validated!")
         return message
+    elif message not in usedUUID:
+        resend_message()
     else:
-        print("Request invalid!")
         return False
+    
