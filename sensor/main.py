@@ -5,6 +5,7 @@ from data import *
 from metrics import *
 
 
+global usedUUID
 usedUUID = []
 radio.config(channel=14, group=1, length=250)
 radio.on()
@@ -24,7 +25,7 @@ while True:
         print("Request received!")
         print("Validating request...")
 
-        validated = validate_data(sensor_id, server_id, incoming,usedUUID)
+        validated,usedUUID = validate_data(sensor_id, server_id, incoming,usedUUID)
 
         if validated:
             count = 1
@@ -42,7 +43,7 @@ while True:
                 data = read_metrics(sensor_id)
 
                 print("Sending data count: {}...".format(i + 1))
-                send_data(sensor_id, server_id, data)
+                usedUUID = send_data(sensor_id, server_id, data,usedUUID)
 
                 sleep(1000)
 
