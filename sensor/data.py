@@ -1,9 +1,10 @@
 import radio
+import uuid
 from OLED import *
 
 
 def send_data(sender_id, receiver_id, data):
-    message = {"sender_id": sender_id, "receiver_id": receiver_id, "data": data}
+    message = {"sender_id": sender_id, "receiver_id": receiver_id, "data": data,"uuid":uuid.uuid4(),"bounces":0}
     radio.send(str(message) + "\n")
 
     print("Data sent!")
