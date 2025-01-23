@@ -34,6 +34,7 @@ while True:
             except:
                 print("Error reading count!")
 
+
             show("Sending data...", 4)
 
             for i in range(count):

@@ -1,4 +1,5 @@
 import radio
+from OLED import *
 
 
 def send_data(sender_id, receiver_id, data):
@@ -19,7 +20,18 @@ def validate_data(sensor_id, server_id, incoming,usedUUID):
         print("Request validated!")
         return message
     elif message not in usedUUID:
-        resend_message()
+        resend_message(incoming)
+        
     else:
         return False
+    
+def resend_message(message):
+
+    radio.send(str(message) + "\n")
+    message["bounces"] +=1
+    show(str(message) + " bounces with resend",3)
+    print("Data resent!")
+    print(str(message))
+
+    
     
