@@ -10,15 +10,15 @@ def sendCommand(controllerId, serverId, changeListen):
     if pcMessage:
         pcMessage = pcMessage.decode()
         pcMessage_dict = {}
-
+        # print(pcMessage)
         try:
             pcMessage_dict = eval(pcMessage)
         except:
             return 0
 
         if not pcMessage_dict["receiver_id"] == controllerId:
-            # display.show("M")
-            # sleep(100)
+            display.show("M")
+            sleep(100)
             pcMessage = str(pcMessage) + "\n"
             radio.send(pcMessage)
 
