@@ -45,6 +45,6 @@ while True:
 
                 sleep(1000)
 
-            show("Data sent", 4)
+            show("Data sent!", 4)
         else:
             print("Request not for us!")
