@@ -24,6 +24,28 @@ def get_data_from_csv(inputarg):
 
     return sensorList
 
+def display_four_graphs(inputarg):
+    sensorList = get_data_from_csv(inputarg)
+    
+    fig, axs = plt.subplots(2, 2, figsize=(12, 10))
+    fig.suptitle(f"Sensor Data for {'All Sensors' if inputarg == 1 else f'Sensor {inputarg}'}")
+    
+    variables = ['temperature', 'humidity', 'eCO2Value', 'iaq']
+    titles = ['Temperature (°C)', 'Humidity (%)', 'eCO2 (ppm)', 'Air Quality Score']
+    
+    for i, (var, title) in enumerate(zip(variables, titles)):
+        ax = axs[i // 2, i % 2]
+        for j, sensor in enumerate(sensorList):
+            sensor_data = sensor.groupby('time')[var].mean()
+            ax.plot(sensor_data.index, sensor_data.values, label=f'Sensor {140+j}')
+        ax.set_title(title)
+
+        
+        ax.set_xlabel('Time')
+        ax.legend()
+    
+    plt.tight_layout()
+    plt.show()
 
 def to_datetime(arr: list) -> datetime:
     return [datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S") for time in arr]
@@ -137,6 +159,7 @@ while i == 0:
     print("3. eCO2")
     print("4. IAQ Score")
     print("5. IAQ Percent")
+    print("6. Display 4 graphs")
     option = input("Please select the data type you wish to see: ").lower()
 
     match option:
@@ -158,6 +181,10 @@ while i == 0:
 
         case "iaq percent" | "5":
             iaqpercent(int(option1))
+            i=0
+        
+        case "display 4" | "6":
+            display_four_graphs(int(option1))
             i = 0
 
         case _:

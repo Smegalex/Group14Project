@@ -34,6 +34,9 @@ while device_id_not_selected:
 server_id = "server14S"
 
 while True:
+    if len(usedUUID) > 30:
+        usedUUID = []
+
     show("Device ID: {}".format(sensor_id), 0)
     show("Server ID: {}".format(server_id), 7)
     show("Ready to send/receive", 2)
@@ -61,7 +64,7 @@ while True:
             for i in range(count):
                 print("Reading metrics...")
                 data = read_metrics(sensor_id)
-
+                show(str(count - i),6)
                 print("Sending data count: {}...".format(i + 1))
                 usedUUID = send_data(sensor_id, server_id, data,usedUUID)
 
