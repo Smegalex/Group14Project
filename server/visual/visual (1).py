@@ -30,8 +30,8 @@ def display_four_graphs(inputarg):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     fig.suptitle(f"Sensor Data for {'All Sensors' if inputarg == 1 else f'Sensor {inputarg}'}")
     
-    variables = ['temperature', 'humidity', 'eCO2Value', 'iaq']
-    titles = ['Temperature (°C)', 'Humidity (%)', 'eCO2 (ppm)', 'Air Quality Score']
+    variables = ['temperature', 'humidity', 'eCO2Value', 'iaqPercent']
+    titles = ['Temperature (°C)', 'Humidity (%)', 'eCO2 (ppm)', 'Air Quality Percentage']
     
     for i, (var, title) in enumerate(zip(variables, titles)):
         ax = axs[i // 2, i % 2]
