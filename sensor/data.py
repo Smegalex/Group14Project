@@ -19,6 +19,7 @@ def validate_data(sensor_id, server_id, incoming,usedUUID):
     except:
         return False,usedUUID
     print("incoming UUID =",message["uuid"])
+    show("UUID=" + str(message["uuid"]), 3)
     if message["sender_id"] == server_id and message["receiver_id"] == sensor_id and message["uuid"] not in usedUUID:
         print("Request validated!")
         usedUUID.append(message["uuid"])
@@ -35,9 +36,8 @@ def validate_data(sensor_id, server_id, incoming,usedUUID):
     
 def resend_message(message,usedUUID):
     radio.send(str(message))
-    show("resent message",2)
+    #show("data to" + message["receiver_id"],3)
     print(usedUUID)
-    print("Data resent!")
 
     
     
