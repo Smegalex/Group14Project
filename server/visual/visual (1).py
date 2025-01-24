@@ -24,20 +24,26 @@ def get_data_from_csv(inputarg):
 
     return sensorList
 
-
 def display_four_graphs(inputarg):
+    fig, axs = plt.subplots(2, 2, figsize=(12, 10))
+    fig.suptitle(f"Sensor Data for {'All Sensors' if inputarg == 1 else f'Sensor {inputarg}'}")
+    fig = animation.FuncAnimation(fig, lambda i: animate_four_graphs(
+        i, inputarg, axs), frames=20, interval=1000)
+    plt.show()
+    
+
+
+def animate_four_graphs(i, inputarg, axs):
     sensorList = get_data_from_csv(inputarg)
 
-    fig, axs = plt.subplots(2, 2, figsize=(12, 10))
-    fig.suptitle(f"Sensor Data for {
-                 'All Sensors' if inputarg == 1 else f'Sensor {inputarg}'}")
-
+    # plt.clf()
     variables = ['temperature', 'humidity', 'eCO2Value', 'iaqPercent']
     titles = ['Temperature (°C)', 'Humidity (%)',
               'eCO2 (ppm)', 'Air Quality Percentage']
 
     for i, (var, title) in enumerate(zip(variables, titles)):
         ax = axs[i // 2, i % 2]
+        ax.clear()
         for j, sensor in enumerate(sensorList):
             sensor_data = sensor.groupby('time')[var].mean()
             ax.plot(to_datetime(sensor_data.index),
@@ -49,7 +55,6 @@ def display_four_graphs(inputarg):
     plt.tight_layout()
     plt.gcf().autofmt_xdate()
     plt.subplots_adjust(bottom=0.12)
-    plt.show()
 
 
 def to_datetime(arr: list) -> datetime:
