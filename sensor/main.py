@@ -34,6 +34,9 @@ while device_id_not_selected:
 server_id = "server14S"
 
 while True:
+    if len(usedUUID) > 30:
+        usedUUID = []
+
     show("Device ID: {}".format(sensor_id), 0)
     show("Server ID: {}".format(server_id), 7)
     show("Ready to send/receive", 2)
