@@ -64,7 +64,7 @@ while True:
             for i in range(count):
                 print("Reading metrics...")
                 data = read_metrics(sensor_id)
-
+                show(str(count - i),6)
                 print("Sending data count: {}...".format(i + 1))
                 usedUUID = send_data(sensor_id, server_id, data,usedUUID)
 

@@ -31,7 +31,7 @@ def display_four_graphs(inputarg):
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     fig.suptitle(f"Sensor Data for {'All Sensors' if inputarg == 1 else f'Sensor {inputarg}'}")
     
-    variables = ['temperature', 'humidity', 'eCO2Value', 'iaqScore']
+    variables = ['temperature', 'humidity', 'eCO2Value', 'iaq']
     titles = ['Temperature (°C)', 'Humidity (%)', 'eCO2 (ppm)', 'Air Quality Score']
     
     for i, (var, title) in enumerate(zip(variables, titles)):
@@ -40,6 +40,8 @@ def display_four_graphs(inputarg):
             sensor_data = sensor.groupby('time')[var].mean()
             ax.plot(sensor_data.index, sensor_data.values, label=f'Sensor {140+j}')
         ax.set_title(title)
+
+        
         ax.set_xlabel('Time')
         ax.legend()
     
