@@ -3,84 +3,112 @@
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import matplotlib.animation as animation
 import os
+
+def get_data_from_csv():
+
+
+    csv_directory = os.path.dirname(os.path.realpath(__file__))
+    csv_directory = csv_directory[0:len(csv_directory)-7]
+    csv_directory = os.path.join(csv_directory,"computer","data")
+
+
+    sensor140 = pd.read_csv(csv_directory+"\sensor140.csv")
+    sensor141 = pd.read_csv(csv_directory+"\sensor141.csv")
+    sensor142 = pd.read_csv(csv_directory+"\sensor142.csv")
+    sensor143 = pd.read_csv(csv_directory+"\sensor143.csv")
+
+
+    return sensor140,sensor141,sensor142,sensor143
+
+
+def animate(i,variable_name,show_name,unit_name):
+    sensor140, sensor141, sensor142, sensor143 = get_data_from_csv()
+    
+    # Order data by date for each sensor
+    ordered140 = sensor140.groupby("time").sum(numeric_only=True)
+    ordered141 = sensor141.groupby("time").sum(numeric_only=True)
+    ordered142 = sensor142.groupby("time").sum(numeric_only=True)
+    ordered143 = sensor143.groupby("time").sum(numeric_only=True)
+    
+    # Clear the previous plot
+    plt.clf()
+    
+    # Plot temperature data for each sensor
+    plt.plot(ordered140.index, ordered140[variable_name], label='Sensor 140', color='red')
+    plt.plot(ordered141.index, ordered141[variable_name], label='Sensor 141', color='blue')
+    plt.plot(ordered142.index, ordered142[variable_name], label='Sensor 142', color='green')
+    plt.plot(ordered143.index, ordered143[variable_name], label='Sensor 143', color='purple')
+    
+    # Set labels and title
+    plt.xlabel("Time")
+    plt.ylabel(show_name+" in " + unit_name)
+    plt.title("Real-time "+show_name+" Change for All Sensors")
+    plt.legend(loc='upper center')
+
 
 
 
 def temperature():
-    all_data = pd.read_csv("data.csv")
-    #Orders data by date, so pm25 value for 1/1/23 comes first
-    #pm25 value after grouping if printed shows everything in date order
-    ordered = all_data.groupby("time").sum(numeric_only=True)
-    temp = ordered['temperature']
-
-    #graph for temperature
-    temp.plot(title = "A graph to show the change in temperature over our recordered  data", color='red')
-    plt.xlabel("Time in seconds")
-    plt.ylabel("Temperature in celsius")
-    plt.legend(loc='upper center')
+    variable_name = "temperature"
+    show_name = "Temperature"
+    unit_name = "Celcius"
+    # Set up the figure
+    fig = plt.figure(figsize=(12, 6))
+# Create the animation
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
     plt.show()
 
 
 def humidity():
-    all_data = pd.read_csv("data.csv")
-    #Orders data by date, so pm25 value for 1/1/23 comes first
-    #pm25 value after grouping if printed shows everything in date order
-    ordered = all_data.groupby("time").sum(numeric_only=True)
-    humidity = ordered['humidity']
-
-    #graph for temperature
-    humidity.plot(title = "A graph to show the change in humidity over our recorded data", color='pink')
-    plt.xlabel("Time in seconds")
-    plt.ylabel("Humidity %")
-    plt.legend(loc='upper center')
+    variable_name = "humidity"
+    show_name = "Humidity"
+    unit_name = "Percentage"
+    # Set up the figure
+    fig = plt.figure(figsize=(12, 6))
+# Create the animation
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
     plt.show()
+
 
 def eco2():
-    all_data = pd.read_csv("data.csv")
-    #Orders data by date, so pm25 value for 1/1/23 comes first
-    #pm25 value after grouping if printed shows everything in date order
-    ordered = all_data.groupby("time").sum(numeric_only=True)
-    eco2 = ordered['eCO2Value']
-
-    #graph for temperature
-    eco2.plot(title = "A graph to show the change in CO2 levels over our recorded data", color='green')
-    plt.xlabel("Time in seconds")
-    plt.ylabel("eCO2 ppm")
-    plt.legend(loc='upper left')
+    variable_name = "eCO2Value"
+    show_name = "eCO2 Score"
+    unit_name = "Parts Per Million"
+    # Set up the figure
+    fig = plt.figure(figsize=(12, 6))
+# Create the animation
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
     plt.show()
+
 
 def iaqscore():
-    all_data = pd.read_csv("data.csv")
-    #Orders data by date, so pm25 value for 1/1/23 comes first
-    #pm25 value after grouping if printed shows everything in date order
-    ordered = all_data.groupby("time").sum(numeric_only=True)
-    iaqScore = ordered['iaqScore']
-
-    #graph for temperature
-    iaqScore.plot(title = "Graph to show the recorded indoor air quality", color='green')
-    plt.xlabel("Time in seconds")
-    plt.ylabel("A score from 0 - 150")
-    plt.legend(loc='upper left')
+    variable_name = "iaqScore"
+    show_name = "Air Quality Score"
+    unit_name = "a 1-150 Scale"
+    # Set up the figure
+    fig = plt.figure(figsize=(12, 6))
+# Create the animation
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
     plt.show()
 
-def iaqpercent():
-    all_data = pd.read_csv("data.csv")
-    #Orders data by date, so pm25 value for 1/1/23 comes first
-    #pm25 value after grouping if printed shows everything in date order
-    ordered = all_data.groupby("time").sum(numeric_only=True)
-    iaqPercent = ordered['iaqPercent']
 
-    #graph for temperature
-    iaqPercent.plot(title = "Graph to show the recorded indoor air quality percentage", color='green')
-    plt.xlabel("Time in seconds")
-    plt.ylabel("IAQ %")
-    plt.legend(loc='upper center')
+def iaqpercent():
+    variable_name = "iaqPercent"
+    show_name = "Air Quality Percent"
+    unit_name = "Percent"
+    # Set up the figure
+    fig = plt.figure(figsize=(12, 6))
+# Create the animation
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
     plt.show()
 
 
 i=0
 while i == 0:
+    
+    get_data_from_csv()
 
     print("1. Temperature")
     print("2. Humidity")
