@@ -1,17 +1,16 @@
-# Use normal case switch to create option menu and look up tips to make it look more professional
-#Find ways to neatly represent data 
-
 import matplotlib.pyplot as plt
 import pandas as pd
+import datetime
 import matplotlib.animation as animation
 import os
+
 
 def get_data_from_csv(inputarg):
 
     sensorList = []
     csv_directory = os.path.dirname(os.path.realpath(__file__))
     csv_directory = csv_directory[0:len(csv_directory)-7]
-    csv_directory = os.path.join(csv_directory,"computer","data")
+    csv_directory = os.path.join(csv_directory, "computer", "data")
 
     if inputarg == 1:
         print("hi")
@@ -20,10 +19,14 @@ def get_data_from_csv(inputarg):
         sensorList.append(pd.read_csv(csv_directory+"\sensor142.csv"))
         sensorList.append(pd.read_csv(csv_directory+"\sensor143.csv"))
     else:
-        sensorList.append(pd.read_csv(csv_directory+"\sensor"+str(inputarg)+".csv"))
-
+        sensorList.append(pd.read_csv(
+            csv_directory+"\sensor"+str(inputarg)+".csv"))
 
     return sensorList
+
+
+def to_datetime(arr: list) -> datetime:
+    return [datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S") for time in arr]
 
 
 def animate(i, variable_name, show_name, unit_name, inputarg):
@@ -31,22 +34,28 @@ def animate(i, variable_name, show_name, unit_name, inputarg):
     # Order data by date for each sensor
     for item in sensorList:
         item = item.groupby("time").sum(numeric_only=True)
-    
+
     # Clear the previous plot
     plt.clf()
-    
+
     # Find the maximum value across all sensors
-    
+
     if inputarg == 1:
-        plt.plot(sensorList[0]["time"], sensorList[0][variable_name], label='Sensor 140', color='red')
-        plt.plot(sensorList[1]["time"], sensorList[1][variable_name], label='Sensor 141', color='blue')
-        plt.plot(sensorList[2]["time"], sensorList[2][variable_name], label='Sensor 142', color='green')
-        plt.plot(sensorList[3]["time"], sensorList[3][variable_name], label='Sensor 143', color='purple')
+        plt.plot(to_datetime(sensorList[0]["time"]), sensorList[0]
+                 [variable_name], label='Sensor 140', color='red')
+        plt.plot(to_datetime(sensorList[1]["time"]), sensorList[1]
+                 [variable_name], label='Sensor 141', color='blue')
+        plt.plot(to_datetime(sensorList[2]["time"]), sensorList[2]
+                 [variable_name], label='Sensor 142', color='green')
+        plt.plot(to_datetime(sensorList[3]["time"]), sensorList[3]
+                 [variable_name], label='Sensor 143', color='purple')
     else:
         print(sensorList)
-        plt.plot(sensorList[0]["time"], sensorList[0][variable_name], label='Sensor'+str(inputarg), color='purple')
-    
+        plt.plot(to_datetime(sensorList[0]["time"]), sensorList[0]
+                 [variable_name], label='Sensor'+str(inputarg), color='purple')
+
     # Set labels and title
+    plt.gcf().autofmt_xdate()
     plt.xlabel("Time")
     plt.ylabel(show_name+" in " + unit_name)
     plt.title("Real-time "+show_name+" Change for All Sensors")
@@ -60,7 +69,8 @@ def temperature(inputarg):
     # Set up the figure
     fig = plt.figure()
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(
+        i, variable_name, show_name, unit_name, inputarg), frames=20, interval=1000)
     plt.show()
 
 
@@ -71,7 +81,8 @@ def humidity(inputarg):
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(
+        i, variable_name, show_name, unit_name, inputarg), frames=20, interval=1000)
     plt.show()
 
 
@@ -82,7 +93,8 @@ def eco2(inputarg):
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(
+        i, variable_name, show_name, unit_name, inputarg), frames=20, interval=1000)
     plt.show()
 
 
@@ -93,7 +105,8 @@ def iaqscore(inputarg):
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(
+        i, variable_name, show_name, unit_name, inputarg), frames=20, interval=1000)
     plt.show()
 
 
@@ -104,19 +117,21 @@ def iaqpercent(inputarg):
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(
+        i, variable_name, show_name, unit_name, inputarg), frames=20, interval=1000)
     plt.show()
 
 
-i=0
+i = 0
 while i == 0:
-    option1 = input("Please write A for all sensors or the sensor number to target: ")
+    option1 = input(
+        "Please write A for all sensors or the sensor number to target: ")
     if option1.upper() == "A":
         option1 = 1
         get_data_from_csv(option1)
     else:
         get_data_from_csv(int(option1))
-    
+
     print("1. Temperature")
     print("2. Humidity")
     print("3. eCO2")
@@ -127,41 +142,25 @@ while i == 0:
     match option:
         case "temperature" | "1":
             temperature(int(option1))
-            i=0
+            i = 0
 
-            
-    
         case "humidity" | "2":
             humidity(int(option1))
-            i=0
-            
+            i = 0
 
         case "eco2" | "3":
             eco2(int(option1))
-            i=0
-            
+            i = 0
+
         case "iaq score" | "4":
             iaqscore(int(option1))
-            i=0
+            i = 0
 
         case "iaq percent" | "5":
             iaqpercent(int(option1))
-            i=0
+            i = 0
 
         case _:
-            print("Please ensure a number between 1 -5 or a data type listed above has been entered.")
-            i=10
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
+            print(
+                "Please ensure a number between 1 -5 or a data type listed above has been entered.")
+            i = 10
