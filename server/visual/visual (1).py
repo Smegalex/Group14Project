@@ -6,40 +6,45 @@ import pandas as pd
 import matplotlib.animation as animation
 import os
 
-def get_data_from_csv():
+def get_data_from_csv(inputarg):
 
-
+    sensorList = []
     csv_directory = os.path.dirname(os.path.realpath(__file__))
     csv_directory = csv_directory[0:len(csv_directory)-7]
     csv_directory = os.path.join(csv_directory,"computer","data")
 
+    if inputarg == 1:
+        print("hi")
+        sensorList.append(pd.read_csv(csv_directory+"\sensor140.csv"))
+        sensorList.append(pd.read_csv(csv_directory+"\sensor141.csv"))
+        sensorList.append(pd.read_csv(csv_directory+"\sensor142.csv"))
+        sensorList.append(pd.read_csv(csv_directory+"\sensor143.csv"))
+    else:
+        sensorList.append(pd.read_csv(csv_directory+"\sensor"+str(inputarg)+".csv"))
 
-    sensor140 = pd.read_csv(csv_directory+"\sensor140.csv")
-    sensor141 = pd.read_csv(csv_directory+"\sensor141.csv")
-    sensor142 = pd.read_csv(csv_directory+"\sensor142.csv")
-    sensor143 = pd.read_csv(csv_directory+"\sensor143.csv")
+
+    return sensorList
 
 
-    return sensor140,sensor141,sensor142,sensor143
-
-
-def animate(i,variable_name,show_name,unit_name):
-    sensor140, sensor141, sensor142, sensor143 = get_data_from_csv()
-    
+def animate(i, variable_name, show_name, unit_name, inputarg):
+    sensorList = get_data_from_csv(inputarg)
     # Order data by date for each sensor
-    ordered140 = sensor140.groupby("time").sum(numeric_only=True)
-    ordered141 = sensor141.groupby("time").sum(numeric_only=True)
-    ordered142 = sensor142.groupby("time").sum(numeric_only=True)
-    ordered143 = sensor143.groupby("time").sum(numeric_only=True)
+    for item in sensorList:
+        item = item.groupby("time").sum(numeric_only=True)
     
     # Clear the previous plot
     plt.clf()
     
-    # Plot temperature data for each sensor
-    plt.plot(ordered140.index, ordered140[variable_name], label='Sensor 140', color='red')
-    plt.plot(ordered141.index, ordered141[variable_name], label='Sensor 141', color='blue')
-    plt.plot(ordered142.index, ordered142[variable_name], label='Sensor 142', color='green')
-    plt.plot(ordered143.index, ordered143[variable_name], label='Sensor 143', color='purple')
+    # Find the maximum value across all sensors
+    
+    if inputarg == 1:
+        plt.plot(sensorList[0]["time"], sensorList[0][variable_name], label='Sensor 140', color='red')
+        plt.plot(sensorList[1]["time"], sensorList[1][variable_name], label='Sensor 141', color='blue')
+        plt.plot(sensorList[2]["time"], sensorList[2][variable_name], label='Sensor 142', color='green')
+        plt.plot(sensorList[3]["time"], sensorList[3][variable_name], label='Sensor 143', color='purple')
+    else:
+        print(sensorList)
+        plt.plot(sensorList[0]["time"], sensorList[0][variable_name], label='Sensor'+str(inputarg), color='purple')
     
     # Set labels and title
     plt.xlabel("Time")
@@ -48,68 +53,70 @@ def animate(i,variable_name,show_name,unit_name):
     plt.legend(loc='upper center')
 
 
-
-
-def temperature():
+def temperature(inputarg):
     variable_name = "temperature"
     show_name = "Temperature"
     unit_name = "Celcius"
     # Set up the figure
-    fig = plt.figure(figsize=(12, 6))
+    fig = plt.figure()
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
     plt.show()
 
 
-def humidity():
+def humidity(inputarg):
     variable_name = "humidity"
     show_name = "Humidity"
     unit_name = "Percentage"
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
     plt.show()
 
 
-def eco2():
+def eco2(inputarg):
     variable_name = "eCO2Value"
     show_name = "eCO2 Score"
     unit_name = "Parts Per Million"
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
     plt.show()
 
 
-def iaqscore():
+def iaqscore(inputarg):
     variable_name = "iaqScore"
     show_name = "Air Quality Score"
     unit_name = "a 1-150 Scale"
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
     plt.show()
 
 
-def iaqpercent():
+def iaqpercent(inputarg):
     variable_name = "iaqPercent"
     show_name = "Air Quality Percent"
     unit_name = "Percent"
     # Set up the figure
     fig = plt.figure(figsize=(12, 6))
 # Create the animation
-    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name), frames=20, interval=1000)
+    fig = animation.FuncAnimation(fig, lambda i: animate(i, variable_name,show_name,unit_name,inputarg), frames=20, interval=1000)
     plt.show()
 
 
 i=0
 while i == 0:
+    option1 = input("Please write A for all sensors or the sensor number to target: ")
+    if option1.upper() == "A":
+        option1 = 1
+        get_data_from_csv(option1)
+    else:
+        get_data_from_csv(int(option1))
     
-    get_data_from_csv()
-
     print("1. Temperature")
     print("2. Humidity")
     print("3. eCO2")
@@ -119,26 +126,26 @@ while i == 0:
 
     match option:
         case "temperature" | "1":
-            temperature()
+            temperature(int(option1))
             i=0
 
             
     
         case "humidity" | "2":
-            humidity()
+            humidity(int(option1))
             i=0
             
 
         case "eco2" | "3":
-            eco2()
+            eco2(int(option1))
             i=0
             
         case "iaq score" | "4":
-            iaqscore()
+            iaqscore(int(option1))
             i=0
 
         case "iaq percent" | "5":
-            iaqpercent()
+            iaqpercent(int(option1))
             i=0
 
         case _:
