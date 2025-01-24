@@ -6,7 +6,7 @@ def receiveCommand(serverId: str):
 
     if message:
         display.show("R")
-        sleep(200)
+        # sleep(200)
 
         try:
             eval(message)

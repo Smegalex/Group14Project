@@ -18,7 +18,7 @@ def sendCommand(controllerId, serverId, changeListen):
 
         if not pcMessage_dict["receiver_id"] == controllerId:
             display.show("M")
-            sleep(100)
+            # sleep(100)
             pcMessage = str(pcMessage) + "\n"
             radio.send(pcMessage)
 
@@ -31,7 +31,7 @@ def sendCommand(controllerId, serverId, changeListen):
             uart.write((str(confirm)+"\n"))
         else:
             display.show("C")
-            sleep(100)
+            # sleep(100)
             command = pcMessage_dict["data"]
             if command.startswith("listen"):
                 duration = command.split("listen")[0]

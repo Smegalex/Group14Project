@@ -1,6 +1,7 @@
 import serial
 import time as timey
 import random
+import datetime
 from csvFormatting import process_messages
 
 portName = "COM9"  # add more variables for other portnames
@@ -141,6 +142,7 @@ def receive_messages():
                 if msg_dict['receiver_id'] == personal_id:
                     if (isinstance(msg_dict["data"], dict)):
                         if not msg_dict['uuid'] in used_uuids:
+                            msg_dict['data']['time'] = str(datetime.datetime.now())[:-7]
                             process_messages(msg_dict)
                             used_uuids.append(msg_dict['uuid'])
                             print(f"{GREEN}{msg_dict["sender_id"]}:{

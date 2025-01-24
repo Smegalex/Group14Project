@@ -17,8 +17,6 @@ listenDuration = 0
 
 def changeListen(newAmount: int):
     global listenDuration
-    display.show(9)
-    sleep(100)
     listenDuration = newAmount
 
 
