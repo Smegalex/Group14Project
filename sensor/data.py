@@ -14,31 +14,31 @@ def send_data(sender_id, receiver_id, data, usedUUID):
     return usedUUID
 
 
-def validate_data(sensor_id, server_id, incoming, usedUUID: list, broadband_id: str = "sensor140"):
+def validate_data(sensor_id, server_id, incoming, usedUUID: list, commandUUID: list, broadband_id: str = "sensor140"):
     try:
         message = eval(incoming)
     except:
         return False, usedUUID
     print("incoming UUID =", message["uuid"])
-    show("UUID=" + str(message["uuid"]), 3)
-    if message["sender_id"] == server_id and message["receiver_id"] == broadband_id and message["uuid"] not in usedUUID:
+    show("UUID=" + str(message["uuid"]), 5)
+    if message["sender_id"] == server_id and message["receiver_id"] == broadband_id and message["uuid"] not in commandUUID:
         print("Broadband request validated!")
-        usedUUID.append(message["uuid"])
+        commandUUID.append(message["uuid"])
         resend_message(incoming, usedUUID)
-        return message, usedUUID
-    elif message["sender_id"] == server_id and message["receiver_id"] == sensor_id and message["uuid"] not in usedUUID:
+        return message, usedUUID, commandUUID
+    elif message["sender_id"] == server_id and message["receiver_id"] == sensor_id and message["uuid"] not in commandUUID:
         print("Request validated!")
-        usedUUID.append(message["uuid"])
-        return message, usedUUID
+        commandUUID.append(message["uuid"])
+        return message, usedUUID, commandUUID
     elif message['sender_id'] == sensor_id:
-        return False, usedUUID
+        return False, usedUUID, commandUUID
     elif message["uuid"] not in usedUUID:
         usedUUID.append(message["uuid"])
         resend_message(incoming, usedUUID)
-        return False, usedUUID
+        return False, usedUUID, commandUUID
     else:
         usedUUID.append(message["uuid"])
-        return False, usedUUID
+        return False, usedUUID, commandUUID
 
 
 def resend_message(message, usedUUID):

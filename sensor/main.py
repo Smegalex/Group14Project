@@ -8,6 +8,8 @@ from audio import *
 
 global usedUUID
 usedUUID = []
+global commandUUID
+commandUUID = []
 radio.config(channel=14, group=1, length=250)
 radio.on()
 
@@ -37,6 +39,8 @@ server_id = "server14S"
 while True:
     if len(usedUUID) > 20:
         usedUUID = []
+    if len(commandUUID) > 10:
+        commandUUID = []
 
     show("Device ID: {}".format(sensor_id), 0)
     show("Server ID: {}".format(server_id), 7)
@@ -49,8 +53,8 @@ while True:
         print("Request received!")
         print("Validating request...")
 
-        validated, usedUUID = validate_data(
-            sensor_id, server_id, incoming, usedUUID, broadband_id)
+        validated, usedUUID, commandUUID = validate_data(
+            sensor_id, server_id, incoming, usedUUID, commandUUID, broadband_id)
 
         if validated:
             count = 1
