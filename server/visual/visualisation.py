@@ -3,7 +3,9 @@ import pandas as pd
 import datetime
 import matplotlib.animation as animation
 import os
+import warnings
 
+warnings.filterwarnings("ignore")
 VALID_SENSORS = [141, 142, 143, 144]
 DATATYPE_CONVERSION = {
     "1": "temperature",
