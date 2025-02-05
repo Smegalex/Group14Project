@@ -4,12 +4,11 @@ from audio import *
 play(Sound.TWINKLE)
 
 
-
 radio.config(channel=14, group=1, length=250)
 radio.on()
 usedUUID = []
 while True:
-    if len[usedUUID] > 30:
+    if len(usedUUID) > 30:
         usedUUID = []
     incoming = radio.receive()
     display.show("r")
@@ -24,4 +23,3 @@ while True:
             radio.send(str(message))
             print(usedUUID)
             print("Data resent!")
-            play(Sound.TWINKLE)
