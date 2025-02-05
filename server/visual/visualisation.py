@@ -44,6 +44,15 @@ YELLOW = "\033[1;33m"
 WHITE = "\033[1;37m"
 
 
+def print_allowed_datatypes() -> None:
+    print("1. Temperature")
+    print("2. Humidity")
+    print("3. eCO2")
+    print("4. IAQ Score")
+    print("5. IAQ Percent")
+    print("6. Display 4 graphs (Temp, Humidity, eCO2, IAQ Percent)")
+
+
 def add_csv_data(filename: str, verbose: bool = False) -> pd.DataFrame | None:
     try:
         return pd.read_csv(filename)
@@ -59,7 +68,7 @@ def get_data_from_csv(inputarg: int | list, verbose: bool = False) -> dict:
     sensorList = {}
     csv_directory = os.path.dirname(os.path.realpath(__file__))
     csv_directory = csv_directory[0:len(csv_directory)-7]
-    csv_directory = os.path.join(csv_directory, "computer", "data")
+    csv_directory = os.path.join(csv_directory, "dataProcessing", "data")
 
     if isinstance(inputarg, list):
         for sensor in inputarg:
@@ -90,7 +99,7 @@ def display_four_graphs(inputarg: int | list) -> None:
     if inputarg == 140:
         title += "all sensors."
     elif isinstance(inputarg, list):
-        title += f'sensors {", ".join(inputarg)}.'
+        title += f'sensors {", ".join(str(inputarg))}.'
     else:
         title += f'sensor {inputarg}.'
 
@@ -217,6 +226,7 @@ def display(options: list | int, datatype: str) -> None:
     except KeyError:
         print(
             f"{RED}Please ensure correct data type is selected.{GRAY}")
+        return None
     match datatype:
         case "temperature":
             temperature(options)
@@ -274,12 +284,7 @@ if __name__ == "__main__":
             except ValueError:
                 continue
 
-        print("1. Temperature")
-        print("2. Humidity")
-        print("3. eCO2")
-        print("4. IAQ Score")
-        print("5. IAQ Percent")
-        print("6. Display 4 graphs (Temp, Humidity, eCO2, IAQ Percent)")
+        print_allowed_datatypes()
         datatype = input(f"{WHITE}Please select the data type you wish to see: {
                          GRAY}").lower().strip()
 
@@ -288,5 +293,6 @@ if __name__ == "__main__":
         except KeyError:
             print(
                 f"{RED}Please ensure a number between 1-6 or a data type listed above has been entered.{GRAY}")
+            continue
 
         display(options, datatype)
