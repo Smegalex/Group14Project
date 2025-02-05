@@ -3,7 +3,7 @@ import radio
 from OLED import *
 from data import *
 from metrics import *
-from audio import * 
+from audio import *
 
 
 global usedUUID
@@ -13,28 +13,29 @@ radio.on()
 
 init_display()
 device_id_not_selected = True
-sensor_id = 140
+sensor_id = 141
+broadband_id = "sensor140"
 play(Sound.HAPPY)
 
 
 while device_id_not_selected:
-    show("Press A to add 1",1)
-    show("Press B to finish",2)
-    show("Sensor ID:"+str(sensor_id),4)
+    show("Press A to add 1", 1)
+    show("Press B to finish", 2)
+    show("Sensor ID:"+str(sensor_id), 4)
     if button_a.is_pressed():
         sensor_id += 1
         if sensor_id == 150:
-            sensor_id = 140
+            sensor_id = 141
     if button_b.is_pressed():
         sensor_id = "sensor"+str(sensor_id)
         device_id_not_selected = False
-        show("",1)
-        show("",4)
+        show("", 1)
+        show("", 4)
 
 server_id = "server14S"
 
 while True:
-    if len(usedUUID) > 30:
+    if len(usedUUID) > 20:
         usedUUID = []
 
     show("Device ID: {}".format(sensor_id), 0)
@@ -48,7 +49,8 @@ while True:
         print("Request received!")
         print("Validating request...")
 
-        validated,usedUUID = validate_data(sensor_id, server_id, incoming,usedUUID)
+        validated, usedUUID = validate_data(
+            sensor_id, server_id, incoming, usedUUID, broadband_id)
 
         if validated:
             count = 1
@@ -58,15 +60,14 @@ while True:
             except:
                 print("Error reading count!")
 
-
             show("Sending data.", 3)
 
             for i in range(count):
                 print("Reading metrics...")
                 data = read_metrics(sensor_id)
-                show(str(count - i),6)
+                show(str(count - i), 6)
                 print("Sending data count: {}...".format(i + 1))
-                usedUUID = send_data(sensor_id, server_id, data,usedUUID)
+                usedUUID = send_data(sensor_id, server_id, data, usedUUID)
 
                 sleep(1000)
             show("Data sent!", 3)

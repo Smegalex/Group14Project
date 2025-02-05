@@ -1,4 +1,4 @@
-from bme688 import *
+from bme688 import calc_temperature, calc_humidity, init_gas_sensor, init_sensor, calc_air_quality, read_data_registers
 
 init_sensor()
 init_gas_sensor()
