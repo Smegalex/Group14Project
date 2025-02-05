@@ -3,8 +3,7 @@ import serial
 import time as timey
 import random
 import datetime
-from dataProcessing.csvFormatting import process_messages
-import threading
+from dataProcessing.csvFormatting import process_messages, clear_data
 import multiprocessing
 
 
@@ -188,6 +187,18 @@ def send_message():
             time = time[1].strip()
             update_listen(time)
             print(f"Listening for {listen} seconds")
+        elif user_input.startswith("/clear") or user_input.startswith("/c"):
+            args = ''
+            if user_input.startswith("/clear"):
+                args = user_input.split("/clear")
+            else:
+                args = user_input.split("/c")
+            args = args[1].strip()
+            args = args.split(" ")
+            args = [x.strip() for x in args if not x == None]
+            if len(args) == 1:
+                args = args[0]
+            clear_data(args)
         elif user_input.startswith("/display") or user_input.startswith("/d"):
             command_display(user_input)
         elif user_input.startswith("/stop") or user_input.startswith("/s"):
